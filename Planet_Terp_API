@@ -1,0 +1,52 @@
+import pandas as pd
+import requests
+import json
+import csv
+url = "https://planetterp.com/api/v1/course"
+request= input("Which course do you want to review?")
+
+params = {
+    "name":request,
+    "reviews": "true"
+
+}
+r = requests.get(url, params = params)
+if r.status_code == 200:
+    data = r.json()  
+    reviews= data['reviews']
+    print(reviews) 
+else:
+    print("bad input parameter")
+
+with open('course_reviews.csv', mode='w', newline='', encoding='utf-8') as file:
+            
+            
+            fieldnames = ['Course Name', 'Professor', 'Rating', 'Review', 'Expected Grade', 'Date']
+            
+            
+            writer = csv.DictWriter(file, fieldnames=fieldnames)
+            
+            
+            writer.writeheader()
+
+            for review in reviews:
+                writer.writerow({
+                    'Course Name': review['course'],  
+                    'Professor': review['professor'],  
+                    'Rating': review['rating'],  
+                    'Review': review['review'],  
+                    'Expected Grade': review['expected_grade'],
+                    'Date': review['created']
+
+                })
+
+df = pd.read_csv('course_reviews.csv')
+print(df['Review'])
+
+request2 = input("Would you like to look at a certain professor?")
+if request2 == 'yes':
+    request2 = input("Please enter professor")
+    filtered_df= df[df['Professor'] == request2]
+
+print(filtered_df['Review'])
+        
