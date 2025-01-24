@@ -45,6 +45,7 @@ if __name__ == "__main__":
     url = "https://planetterp.com/api/v1/course"
 
     request= input("Which course do you want to review?")
+    request2 = input("Please enter professor")
     params = {
         "name":request,
         "reviews": "true"
@@ -82,15 +83,13 @@ if __name__ == "__main__":
 
     df = pd.read_csv('course_reviews.csv')
     #print(df['Review'])
-    reviews = df['Review'].to_numpy().tolist()
 
-    request2 = input("Would you like to look at a certain professor?")
-    if request2 == 'yes':
-        request2 = input("Please enter professor")
-        filtered_df= df[df['Professor'] == request2]
 
-        #print(filtered_df['Review'])
-        reviews = filtered_df['Review'].to_numpy().tolist()
+
+    filtered_df= df[df['Professor'] == request2]
+
+
+    reviews = filtered_df['Review'].to_numpy().tolist()
     
     
 
